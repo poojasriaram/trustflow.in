@@ -1,0 +1,1084 @@
+
+
+import React from "react";
+import { Link } from 'react-router-dom';
+import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
+import { Badge } from "@/components/ui/badge";
+import { OfferingData } from "@/data/offeringsData";
+import { buildEnterpriseContent, EnterpriseContent } from "@/lib/enterpriseContentMapper";
+import { EnterprisePageHero } from "@/components/sections/EnterprisePageHero";
+import {
+  Shield,
+  Target,
+  AlertTriangle,
+  Layers,
+  CheckCircle2,
+  ChevronRight,
+  Download,
+  FileText,
+  Globe,
+  TrendingUp,
+  Zap,
+  BarChart3,
+} from "lucide-react";
+
+interface EnterpriseOfferingLayoutProps {
+  offering: OfferingData;
+}
+
+const DEFAULT_KPIS = [
+  { value: "150+", label: "Countries Covered" },
+  { value: "99%", label: "Client Retention" },
+  { value: "45+", label: "Platforms" },
+  { value: "24/7", label: "Expert Support" },
+];
+
+const DEFAULT_CAPABILITIES = [
+  {
+    title: "Coverage Architecture",
+    desc: "Multi-layered protection designed for enterprise scale and complexity.",
+    bullets: ["Global Protection", "Industry Alignment", "Risk Transfer", "Compliance Support"],
+  },
+  {
+    title: "Program Structuring",
+    desc: "Optimized limits, deductibles, and retention aligned to risk appetite.",
+    bullets: [
+      "Limit Optimization",
+      "Deductible Strategy",
+      "Captive Integration",
+      "Carrier Selection",
+    ],
+  },
+  {
+    title: "Risk Analytics",
+    desc: "Data-driven insights for underwriting, claims, and portfolio management.",
+    bullets: [
+      "Predictive Modeling",
+      "Loss Analytics",
+      "Benchmarking",
+      "Exposure Mapping",
+    ],
+  },
+  {
+    title: "Governance & Compliance",
+    desc: "Regulatory alignment across jurisdictions with audit-ready documentation.",
+    bullets: [
+      "Multi-Jurisdictional Compliance",
+      "Regulatory Reporting",
+      "Audit Trails",
+      "Policy Governance",
+    ],
+  },
+];
+
+const DEFAULT_CHALLENGES = [
+  {
+    title: "Cyber Threats",
+    description:
+      "Ransomware, data breaches, and operational technology attacks escalating in frequency and severity.",
+    icon: "AlertTriangle",
+  },
+  {
+    title: "Supply Chain Disruption",
+    description:
+      "Single-source dependencies and geographic concentration creating uninsured operational risk.",
+    icon: "AlertTriangle",
+  },
+  {
+    title: "Regulatory Compliance",
+    description:
+      "Multi-jurisdictional mandates with evolving penalty structures and reporting requirements.",
+    icon: "AlertTriangle",
+  },
+  {
+    title: "Operational Resilience",
+    description:
+      "Business continuity, crisis response, and rapid recovery capability gaps across enterprises.",
+    icon: "AlertTriangle",
+  },
+  {
+    title: "Third-Party Risk",
+    description:
+      "Vendor concentration and shared responsibility ambiguity exposing downstream liabilities.",
+    icon: "AlertTriangle",
+  },
+  {
+    title: "Climate Exposure",
+    description: "Physical and transition climate risk requiring parametric and adaptive coverage strategies.",
+    icon: "AlertTriangle",
+  },
+];
+
+const DEFAULT_COVERAGE_LAYERS = [
+  {
+    title: "Coverage Layer 1",
+    items: [
+      "Primary risk transfer",
+      "Core perils covered",
+      "Standard policy terms",
+      "Carrier claims handling",
+    ],
+  },
+  {
+    title: "Coverage Layer 2",
+    items: [
+      "Excess liability",
+      "Catastrophe protection",
+      "Sublimit optimization",
+      "Reinsurance backstop",
+    ],
+  },
+  {
+    title: "Coverage Layer 3",
+    items: [
+      "Parametric triggers",
+      "Alternative risk transfer",
+      "Captive integration",
+      "Capital markets access",
+    ],
+  },
+  {
+    title: "Coverage Layer 4",
+    items: [
+      "Enterprise risk financing",
+      "Multi-year structuring",
+      "Global program coordination",
+      "Strategic advisory",
+    ],
+  },
+];
+
+const DEFAULT_BENEFITS = [
+  {
+    title: "Risk Reduction",
+    description:
+      "Structured identification, quantification, and mitigation of enterprise-wide exposures.",
+  },
+  {
+    title: "Operational Continuity",
+    description:
+      "Rapid liquidity, crisis response, and business continuity funding when incidents occur.",
+  },
+  {
+    title: "Regulatory Alignment",
+    description:
+      "Multi-jurisdictional compliance assurance with audit-ready documentation and reporting.",
+  },
+  {
+    title: "Financial Protection",
+    description:
+      "Optimized retention, transfer, and financing to preserve balance sheet integrity.",
+  },
+];
+
+const DEFAULT_RELATED_RISKS = [
+  {
+    title: "Cyber Risk",
+    description:
+      "First and third-party cyber coverage with incident response and regulatory defense.",
+  },
+  {
+    title: "Supply Chain Risk",
+    description:
+      "Contingent business interruption and dependency mapping across multi-tier networks.",
+  },
+  {
+    title: "Climate Risk",
+    description:
+      "Physical and transition risk assessment with parametric and adaptive coverage.",
+  },
+  {
+    title: "Operational Risk",
+    description:
+      "Business interruption, equipment breakdown, and resilience program structuring.",
+  },
+];
+
+const DEFAULT_PLATFORMS = [
+  {
+    title: "Risk Diagnostic Engine",
+    description:
+      "AI-powered assessment across 20 domains and 200+ risk categories with gap analysis.",
+  },
+  {
+    title: "Contract Intelligence",
+    description:
+      "Automated contract risk scoring, indemnification analysis, and insurance gap detection.",
+  },
+  {
+    title: "Regulatory Intelligence",
+    description:
+      "Real-time monitoring of 150+ jurisdictions with compliance alerts and filing support.",
+  },
+  {
+    title: "Climate Analytics",
+    description:
+      "TCFD-aligned scenario analysis with asset-level physical and transition risk modeling.",
+  },
+];
+
+const DEFAULT_SOLUTIONS = [
+  {
+    title: "Enterprise Program Design",
+    description:
+      "Integrated multi-line risk program aligned to strategy, risk appetite, and regulatory requirements.",
+  },
+  {
+    title: "M&A Risk Transfer",
+    description:
+      "Warranty and indemnity, tax liability, and contingent risk coverage for transactions.",
+  },
+  {
+    title: "Alternative Risk Transfer",
+    description:
+      "Captives, parametric solutions, and ILS structures for peak and retained risks.",
+  },
+];
+
+const DEFAULT_CASE_STUDIES = [
+  {
+    title: "Global Manufacturer",
+    clientProfile: "Fortune 500 industrial manufacturer with 40+ facilities across 15 countries",
+    challenge:
+      "Fragmented property program with coverage gaps, inconsistent terms, and slow claims settlement across jurisdictions.",
+    solution:
+      "Consolidated global master program with local admitted policies, unified terms, and TRUSTFLOW claims advocacy.",
+    outcome:
+      "18% premium reduction, 40% faster claims settlement, unified governance across all locations.",
+  },
+  {
+    title: "Technology Unicorn",
+    clientProfile:
+      "Series D SaaS company with rapid expansion across North America, Europe, and APAC",
+    challenge:
+      "Cyber exposure gaps, inconsistent D&O limits across jurisdictions, and AI liability concerns.",
+    solution:
+      "Integrated cyber/E&O/D&O tower with AI endorsement, regulatory defense, and incident response retainer.",
+    outcome:
+      "Complete coverage alignment, $50M+ limit adequacy, zero uninsured AI exposure.",
+  },
+  {
+    title: "Infrastructure Developer",
+    clientProfile:
+      "Mid-market infrastructure developer with $2B+ project pipeline across emerging markets",
+    challenge:
+      "Political risk, construction delay, and cross-border liability gaps threatening project financing.",
+    solution:
+      "Parametric weather triggers, political risk insurance, and CAR/EAR placement across five jurisdictions.",
+    outcome:
+      "Project financing secured, 30-day parametric payout validated, multi-country compliance achieved.",
+  },
+];
+
+const DEFAULT_DIAGNOSTICS = [
+  {
+    title: "Cyber Insurance Readiness Assessment",
+    description:
+      "Evaluate security posture, coverage gaps, and incident response readiness against industry benchmarks.",
+  },
+  {
+    title: "Property Risk Assessment",
+    description:
+      "Asset valuation, exposure modeling, and coverage adequacy review for physical assets.",
+  },
+  {
+    title: "Directors & Officers Assessment",
+    description:
+      "Governance review, liability exposure mapping, and D&O program adequacy evaluation.",
+  },
+  {
+    title: "Supply Chain Risk Diagnostic",
+    description:
+      "Multi-tier dependency mapping, concentration analysis, and contingent BI gap identification.",
+  },
+];
+
+const DEFAULT_INDUSTRY_TABS = [
+  {
+    label: "Technology",
+    content: {
+      industryChallenges: [
+        "Rapid innovation outpacing risk controls",
+        "AI and autonomous system liability",
+        "Cloud concentration and systemic failure",
+      ],
+      industryRiskExposure: [
+        "Cyber attack and ransomware",
+        "Professional liability from outages",
+        "Regulatory investigation and defense",
+      ],
+      recommendedOfferings: [
+        "Cyber Insurance - First Party",
+        "Technology Errors & Omissions",
+        "AI & Algorithm Liability Insurance",
+      ],
+      relatedRisks: ["Cyber Risk", "Tech E&O", "AI Risk"],
+      relatedPlatforms: [
+        "Cyber Risk Maturity Assessment",
+        "Real-Time Risk Intelligence Feed",
+        "AI Contract Risk Analytics",
+      ],
+      industryBenefits: [
+        "Innovation confidence",
+        "Investor-grade protection",
+        "Global scaling assurance",
+      ],
+    },
+  },
+  {
+    label: "Healthcare",
+    content: {
+      industryChallenges: [
+        "Patient data privacy and security",
+        "Clinical trial liability",
+        "Medical device and pharmaceutical recall",
+      ],
+      industryRiskExposure: [
+        "Medical malpractice",
+        "Data breach notification",
+        "Regulatory investigation",
+      ],
+      recommendedOfferings: [
+        "Healthcare Industry Risk Program",
+        "Cyber Insurance - Regulatory Defense",
+        "Product Liability Insurance",
+      ],
+      relatedRisks: ["Medical Malpractice", "Data Breach", "Product Liability"],
+      relatedPlatforms: [
+        "Risk Diagnostic Engine",
+        "Policy Gap Analyzer",
+        "Cyber Due Diligence",
+      ],
+      industryBenefits: [
+        "Patient safety assurance",
+        "Regulatory compliance",
+        "Product launch protection",
+      ],
+    },
+  },
+  {
+    label: "Manufacturing",
+    content: {
+      industryChallenges: [
+        "Global supply chain vulnerability",
+        "Equipment breakdown and downtime",
+        "Product liability and recall",
+      ],
+      industryRiskExposure: [
+        "Property damage and BI",
+        "Supply chain disruption",
+        "Product defect claims",
+      ],
+      recommendedOfferings: [
+        "Manufacturing Industry Risk Program",
+        "Property All-Risks Insurance",
+        "Product Recall Insurance",
+      ],
+      relatedRisks: ["Property Damage", "Supply Chain", "Product Liability"],
+      relatedPlatforms: [
+        "Supply Chain Risk Visualizer",
+        "Risk Diagnostic Engine",
+        "Claims Velocity Dashboard",
+      ],
+      industryBenefits: [
+        "Operational continuity",
+        "Supply chain resilience",
+        "Product quality confidence",
+      ],
+    },
+  },
+  {
+    label: "Financial Services",
+    content: {
+      industryChallenges: [
+        "Regulatory penalty severity",
+        "Systemic cyber risk",
+        "Professional liability from advice",
+      ],
+      industryRiskExposure: [
+        "Regulatory investigation",
+        "Data breach of customer records",
+        "Investment advice liability",
+      ],
+      recommendedOfferings: [
+        "Financial Services Industry Risk Program",
+        "Cyber Insurance - Regulatory Defense",
+        "Directors & Officers Liability",
+      ],
+      relatedRisks: ["Regulatory Risk", "Cyber Risk", "Professional Liability"],
+      relatedPlatforms: [
+        "Regulatory Intelligence Platform",
+        "Cyber Risk Maturity Assessment",
+        "M&A Due Diligence Suite",
+      ],
+      industryBenefits: [
+        "Regulatory compliance",
+        "Cyber incident resilience",
+        "Professional liability protection",
+      ],
+    },
+  },
+  {
+    label: "Energy",
+    content: {
+      industryChallenges: [
+        "Construction delay and cost escalation",
+        "Production shortfall from weather",
+        "Grid cyber security",
+      ],
+      industryRiskExposure: [
+        "Construction risk",
+        "Production guarantee trigger",
+        "Natural catastrophe damage",
+      ],
+      recommendedOfferings: [
+        "Energy & Renewables Industry Risk Program",
+        "Parametric Insurance Solutions",
+        "Business Interruption Insurance",
+      ],
+      relatedRisks: ["Construction Risk", "Production Risk", "Cyber Risk"],
+      relatedPlatforms: [
+        "Parametric Risk Platform",
+        "Climate Scenario Analysis",
+        "Cyber Due Diligence",
+      ],
+      industryBenefits: [
+        "Project completion assurance",
+        "Revenue protection for renewables",
+        "Grid cybersecurity",
+      ],
+    },
+  },
+];
+
+export function EnterpriseOfferingLayout({ offering }: EnterpriseOfferingLayoutProps) {
+  const category =
+    offering.category?.replace(/-/g, " ").replace(/\b\w/g, (l) => l.toUpperCase()) ||
+    "Enterprise Solution";
+
+  const content = buildEnterpriseContent(offering);
+  const kpis = content.kpis;
+  const capabilities = content.capabilities;
+  const challengeCards = content.challengeCards;
+  const coverageLayers = content.coverageLayers;
+  const benefitCards = content.benefitCards;
+  const riskCards = content.riskCards;
+  const platformCards = content.platformCards;
+  const solutionCards = content.solutionCards;
+  const caseStudies = content.caseStudies;
+  const diagnostics = content.diagnostics;
+  const industryTabs = content.industryTabs;
+
+  return (
+    <div className="flex flex-col min-h-screen bg-white">
+      {/* SECTION 1: FULL WIDTH HERO */}
+      <EnterprisePageHero
+        badge={category}
+        title={offering.title}
+        subtitle={offering.subtitle}
+        description={offering.shortDescription}
+        primaryCta={{ label: offering.cta?.primary || "Book Consultation", onClick: () => (window.location.href = "/contact") }}
+        secondaryCta={offering.cta?.secondary ? { label: offering.cta.secondary, onClick: () => (window.location.href = "/contact") } : undefined}
+      />
+
+      {/* SECTION 2: ENTERPRISE METRICS & CAPABILITIES - SINGLE SECTION */}
+      <section className="w-full bg-white py-14 border-b border-slate-200">
+        <div className="container mx-auto px-6 md:px-8 max-w-6xl">
+          <div className="text-center mb-12">
+            <Badge variant="secondary" className="w-fit bg-[#EAF2FF] text-[#0B1F3A] border-slate-200 text-sm font-semibold tracking-widest uppercase mb-4">
+              Enterprise Overview
+            </Badge>
+            <h2 className="text-[28px] md:text-[32px] font-bold text-slate-900 font-serif tracking-tight mb-3">
+              Measurable Risk Solutions at Scale
+            </h2>
+            <p className="text-base text-slate-600 max-w-2xl mx-auto leading-snug">
+              Enterprise-grade capabilities designed for complex risk landscapes.
+            </p>
+          </div>
+
+          {/* Executive KPI Cards Row */}
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-6 mb-12">
+            {kpis.map((kpi, i) => (
+              <Card key={i} className="border-slate-300 bg-white shadow-sm hover:shadow-md transition-shadow text-center py-8 px-4">
+                <CardContent className="space-y-3 pt-0">
+                  <Shield className="h-10 w-10 text-blue-600 mx-auto" />
+                  <div className="text-[42px] font-bold text-slate-900 font-serif leading-none">
+                    {kpi.value}
+                  </div>
+                  <div className="text-base font-semibold text-slate-700">
+                    {kpi.label}
+                  </div>
+                  <p className="text-sm text-slate-500 leading-snug px-2">
+                    Enterprise capability
+                  </p>
+                </CardContent>
+              </Card>
+            ))}
+          </div>
+
+          {/* Capability Cards Row */}
+          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+            {capabilities.map((cap, i) => (
+              <Card key={i} className="border-slate-300 bg-white shadow-sm hover:shadow-md transition-shadow">
+                <CardHeader className="pb-3">
+                  <div className="w-11 h-11 rounded bg-[#EAF2FF] flex items-center justify-center mb-3">
+                    <Shield className="h-5 w-5 text-[#1E5EFF]" />
+                  </div>
+                  <CardTitle className="text-base font-bold text-slate-900 leading-snug">
+                    {cap.title}
+                  </CardTitle>
+                </CardHeader>
+                <CardContent className="space-y-3 pt-0">
+                  <p className="text-base text-slate-600 leading-snug">{cap.desc}</p>
+                  <ul className="space-y-2">
+                    {cap.bullets.map((bullet, j) => (
+                      <li key={j} className="flex items-start gap-2 text-base text-slate-700">
+                        <CheckCircle2 className="h-4 w-4 text-emerald-600 shrink-0 mt-0.5" />
+                        <span>{bullet}</span>
+                      </li>
+                    ))}
+                  </ul>
+                </CardContent>
+              </Card>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* SECTION 3: INDUSTRY VERTICAL TABS */}
+      <section className="py-14 bg-slate-50 border-b border-slate-200">
+        <div className="container mx-auto px-6 md:px-8 max-w-6xl">
+          <div className="text-center mb-10">
+            <h2 className="text-[28px] font-bold text-[#0B1F3A] font-serif tracking-tight">
+              Industry Vertical Solutions
+            </h2>
+            <p className="mt-3 text-base text-slate-600 max-w-2xl mx-auto leading-snug">
+              Deep domain expertise across technology, healthcare, manufacturing,
+              energy, and financial services.
+            </p>
+          </div>
+
+          <Tabs defaultValue={industryTabs[0]?.label} orientation="vertical" className="w-full">
+            <TabsList
+              variant="line"
+              className="w-full flex flex-col items-start gap-1 mb-6 bg-transparent"
+            >
+              {industryTabs.map((tab) => (
+                <TabsTrigger
+                  key={tab.label}
+                  value={tab.label}
+                  className="w-full justify-start px-4 py-2.5 text-base font-semibold data-[selected]:text-[#0B1F3A] data-[selected]:border-l-[3px] data-[selected]:border-[#1E5EFF] rounded-none bg-transparent"
+                >
+                  {tab.label}
+                </TabsTrigger>
+              ))}
+            </TabsList>
+
+            {industryTabs.map((tab) => (
+              <TabsContent
+                key={tab.label}
+                value={tab.label}
+                className="bg-white rounded-lg border border-slate-300 p-6"
+              >
+                <div className="grid lg:grid-cols-2 gap-8">
+                  <div className="space-y-6">
+                    <div>
+                      <h3 className="text-lg font-bold text-[#0B1F3A] mb-3 flex items-center gap-2">
+                        <AlertTriangle className="h-4 w-4 text-red-600" />
+                        Industry Challenges
+                      </h3>
+                      <ul className="space-y-2">
+                        {tab.content.industryChallenges.map((item, i) => (
+                          <li
+                            key={i}
+                            className="flex items-start gap-3 text-base text-slate-700"
+                          >
+                            <span className="w-1.5 h-1.5 rounded-full bg-red-500 mt-2 shrink-0" />
+                            <span>{item}</span>
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
+
+                    <div>
+                      <h3 className="text-lg font-bold text-[#0B1F3A] mb-3 flex items-center gap-2">
+                        <Shield className="h-4 w-4 text-[#1E5EFF]" />
+                        Industry Risk Exposure
+                      </h3>
+                      <ul className="space-y-2">
+                        {tab.content.industryRiskExposure.map((item, i) => (
+                          <li
+                            key={i}
+                            className="flex items-start gap-3 text-base text-slate-700"
+                          >
+                            <CheckCircle2 className="h-4 w-4 text-[#1E5EFF] shrink-0 mt-0.5" />
+                            <span>{item}</span>
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
+
+                    <div>
+                      <h3 className="text-lg font-bold text-[#0B1F3A] mb-3 flex items-center gap-2">
+                        <Target className="h-4 w-4 text-emerald-600" />
+                        Recommended Offerings
+                      </h3>
+                      <ul className="space-y-2">
+                        {tab.content.recommendedOfferings.map((item, i) => (
+                          <li
+                            key={i}
+                            className="flex items-start gap-3 text-base text-slate-700"
+                          >
+                            <CheckCircle2 className="h-4 w-4 text-emerald-600 shrink-0 mt-0.5" />
+                            <span>{item}</span>
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
+                  </div>
+
+                  <div className="space-y-6">
+                    <div>
+                      <h3 className="text-lg font-bold text-[#0B1F3A] mb-3 flex items-center gap-2">
+                        <AlertTriangle className="h-4 w-4 text-red-600" />
+                        Related Risks
+                      </h3>
+                      <div className="flex flex-wrap gap-2">
+                        {tab.content.relatedRisks.map((item, i) => (
+                          <span
+                            key={i}
+                            className="px-3 py-1.5 bg-red-50 text-red-700 rounded-full text-base font-medium border border-red-200"
+                          >
+                            {item}
+                          </span>
+                        ))}
+                      </div>
+                    </div>
+
+                    <div>
+                      <h3 className="text-lg font-bold text-[#0B1F3A] mb-3 flex items-center gap-2">
+                        <Globe className="h-4 w-4 text-purple-600" />
+                        Related Platforms
+                      </h3>
+                      <div className="flex flex-wrap gap-2">
+                        {tab.content.relatedPlatforms.map((item, i) => (
+                          <span
+                            key={i}
+                            className="px-3 py-1.5 bg-purple-50 text-purple-700 rounded-full text-base font-medium border border-purple-200"
+                          >
+                            {item}
+                          </span>
+                        ))}
+                      </div>
+                    </div>
+
+                    <div>
+                      <h3 className="text-lg font-bold text-[#0B1F3A] mb-3 flex items-center gap-2">
+                        <TrendingUp className="h-4 w-4 text-emerald-600" />
+                        Industry Benefits
+                      </h3>
+                      <ul className="space-y-2">
+                        {tab.content.industryBenefits.map((item, i) => (
+                          <li
+                            key={i}
+                            className="flex items-start gap-3 text-base text-slate-700"
+                          >
+                            <CheckCircle2 className="h-4 w-4 text-emerald-600 shrink-0 mt-0.5" />
+                            <span>{item}</span>
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
+                  </div>
+                </div>
+              </TabsContent>
+            ))}
+          </Tabs>
+        </div>
+      </section>
+
+      {/* SECTION 6: BUSINESS CHALLENGES */}
+      <section className="py-14 bg-white border-b border-slate-200">
+        <div className="container mx-auto px-6 md:px-8 max-w-6xl">
+          <div className="text-center mb-10">
+            <h2 className="text-[28px] font-bold text-[#0B1F3A] font-serif tracking-tight">
+              Business Challenges
+            </h2>
+            <p className="mt-3 text-base text-slate-600 max-w-2xl mx-auto leading-snug">
+              Enterprise risks that demand structured, multi-layered protection
+              strategies.
+            </p>
+          </div>
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {challengeCards.map((challenge, i) => (
+              <Card
+                key={i}
+                className="border-slate-300 bg-white shadow-sm hover:shadow-md transition-shadow"
+              >
+                <CardHeader className="pb-3">
+                  <div className="w-10 h-10 rounded bg-red-50 flex items-center justify-center mb-2">
+                    <AlertTriangle className="h-5 w-5 text-red-600" />
+                  </div>
+                  <CardTitle className="text-base font-bold text-[#0B1F3A]">
+                    {challenge.title}
+                  </CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <p className="text-base text-slate-600 leading-snug">
+                    {challenge.description}
+                  </p>
+                </CardContent>
+              </Card>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* SECTION 7: COVERAGE ARCHITECTURE */}
+      <section className="py-14 bg-slate-50 border-b border-slate-200">
+        <div className="container mx-auto px-6 md:px-8 max-w-6xl">
+          <div className="text-center mb-10">
+            <h2 className="text-[28px] font-bold text-[#0B1F3A] font-serif tracking-tight">
+              Coverage Architecture
+            </h2>
+            <p className="mt-3 text-base text-slate-600 max-w-2xl mx-auto leading-snug">
+              Enterprise-grade layered protection spanning primary to strategic
+              financing.
+            </p>
+          </div>
+          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-5">
+            {coverageLayers.map((layer, i) => (
+              <Card
+                key={i}
+                className="border-slate-300 bg-white shadow-sm hover:shadow-md transition-shadow h-full"
+              >
+                <CardHeader className="pb-3 bg-[#0B1F3A]/[0.03] border-b border-slate-200">
+                  <div className="flex items-center gap-2">
+                    <div className="w-7 h-7 rounded-full bg-[#1E5EFF] text-white flex items-center justify-center text-sm font-bold">
+                      {i + 1}
+                    </div>
+                    <CardTitle className="text-base font-bold text-[#0B1F3A]">
+                      {layer.title}
+                    </CardTitle>
+                  </div>
+                </CardHeader>
+                <CardContent className="pt-3">
+                  <ul className="space-y-2">
+                    {layer.items.map((item, j) => (
+                      <li
+                        key={j}
+                        className="flex items-start gap-2 text-base text-slate-700"
+                      >
+                        <CheckCircle2 className="h-3.5 w-3.5 text-emerald-600 shrink-0 mt-0.5" />
+                        <span>{item}</span>
+                      </li>
+                    ))}
+                  </ul>
+                </CardContent>
+              </Card>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* SECTION 8: KEY BENEFITS */}
+      <section className="py-14 bg-white border-b border-slate-200">
+        <div className="container mx-auto px-6 md:px-8 max-w-6xl">
+          <div className="text-center mb-10">
+            <h2 className="text-[28px] font-bold text-[#0B1F3A] font-serif tracking-tight">
+              Key Benefits
+            </h2>
+            <p className="mt-3 text-base text-slate-600 max-w-2xl mx-auto leading-snug">
+              Measurable outcomes that transform risk from cost center to
+              strategic advantage.
+            </p>
+          </div>
+          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+            {benefitCards.map((benefit, i) => (
+              <Card
+                key={i}
+                className="border-slate-300 bg-white shadow-sm hover:shadow-md transition-shadow text-center"
+              >
+                <CardHeader className="pb-3">
+                  <div className="w-12 h-12 rounded-full bg-emerald-50 flex items-center justify-center mx-auto mb-3">
+                    <CheckCircle2 className="h-6 w-6 text-emerald-600" />
+                  </div>
+                  <CardTitle className="text-base font-bold text-[#0B1F3A]">
+                    {benefit.title}
+                  </CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <p className="text-base text-slate-600 leading-snug">
+                    {benefit.description}
+                  </p>
+                </CardContent>
+              </Card>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* SECTION 9: RELATED RISKS */}
+      <section className="py-14 bg-slate-50 border-b border-slate-200">
+        <div className="container mx-auto px-6 md:px-8 max-w-6xl">
+          <div className="text-center mb-10">
+            <h2 className="text-[28px] font-bold text-[#0B1F3A] font-serif tracking-tight">
+              Related Risks
+            </h2>
+            <p className="mt-3 text-base text-slate-600 max-w-2xl mx-auto leading-snug">
+              Comprehensive risk coverage addressing interconnected exposures.
+            </p>
+          </div>
+          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-5">
+            {riskCards.map((risk, i) => (
+              <Card
+                key={i}
+                className="border-slate-300 bg-white shadow-sm hover:shadow-md transition-shadow"
+              >
+                <CardHeader className="pb-3">
+                  <div className="w-9 h-9 rounded bg-red-50 flex items-center justify-center mb-2">
+                    <AlertTriangle className="h-4 w-4 text-red-600" />
+                  </div>
+                  <CardTitle className="text-base font-bold text-[#0B1F3A]">
+                    {risk.title}
+                  </CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <p className="text-base text-slate-600 leading-snug">
+                    {risk.description}
+                  </p>
+                </CardContent>
+              </Card>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* SECTION 10: RELATED PLATFORMS */}
+      <section className="py-14 bg-white border-b border-slate-200">
+        <div className="container mx-auto px-6 md:px-8 max-w-6xl">
+          <div className="text-center mb-10">
+            <h2 className="text-[28px] font-bold text-[#0B1F3A] font-serif tracking-tight">
+              Related Platforms
+            </h2>
+            <p className="mt-3 text-base text-slate-600 max-w-2xl mx-auto leading-snug">
+              Technology-driven intelligence for risk assessment, monitoring, and
+              compliance.
+            </p>
+          </div>
+          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-5">
+            {platformCards.map((platform, i) => (
+              <Card
+                key={i}
+                className="border-slate-300 bg-white shadow-sm hover:shadow-md transition-shadow"
+              >
+                <CardHeader className="pb-3">
+                  <div className="w-9 h-9 rounded bg-purple-50 flex items-center justify-center mb-2">
+                    <BarChart3 className="h-4 w-4 text-purple-600" />
+                  </div>
+                  <CardTitle className="text-base font-bold text-[#0B1F3A]">
+                    {platform.title}
+                  </CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <p className="text-base text-slate-600 leading-snug">
+                    {platform.description}
+                  </p>
+                </CardContent>
+              </Card>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* SECTION 11: RELATED SOLUTIONS */}
+      <section className="py-14 bg-slate-50 border-b border-slate-200">
+        <div className="container mx-auto px-6 md:px-8 max-w-6xl">
+          <div className="text-center mb-10">
+            <h2 className="text-[28px] font-bold text-[#0B1F3A] font-serif tracking-tight">
+              Related Solutions
+            </h2>
+            <p className="mt-3 text-base text-slate-600 max-w-2xl mx-auto leading-snug">
+              Complementary offerings that enhance your enterprise risk program.
+            </p>
+          </div>
+          <div className="grid md:grid-cols-3 gap-6">
+            {solutionCards.map((solution, i) => (
+              <Card
+                key={i}
+                className="border-slate-300 bg-white shadow-sm hover:shadow-md transition-shadow"
+              >
+                <CardHeader className="pb-3">
+                  <div className="w-9 h-9 rounded bg-[#EAF2FF] flex items-center justify-center mb-2">
+                    <Zap className="h-4 w-4 text-[#1E5EFF]" />
+                  </div>
+                  <CardTitle className="text-base font-bold text-[#0B1F3A]">
+                    {solution.title}
+                  </CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <p className="text-base text-slate-600 leading-snug">
+                    {solution.description}
+                  </p>
+                </CardContent>
+              </Card>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* SECTION 12: CASE STUDIES */}
+      <section className="py-14 bg-white border-b border-slate-200">
+        <div className="container mx-auto px-6 md:px-8 max-w-6xl">
+          <div className="text-center mb-10">
+            <h2 className="text-[28px] font-bold text-[#0B1F3A] font-serif tracking-tight">
+              Case Studies
+            </h2>
+            <p className="mt-3 text-base text-slate-600 max-w-2xl mx-auto leading-snug">
+              Proven results for enterprises across industries and geographies.
+            </p>
+          </div>
+          <div className="grid lg:grid-cols-3 gap-6">
+            {caseStudies.map((study, i) => (
+              <Card
+                key={i}
+                className="border-slate-300 bg-white shadow-sm hover:shadow-md transition-shadow h-full flex flex-col"
+              >
+                <CardHeader className="pb-3">
+                  <CardTitle className="text-base font-bold text-[#0B1F3A]">
+                    {study.title}
+                  </CardTitle>
+                  <p className="text-sm text-slate-500 mt-1">
+                    {study.clientProfile}
+                  </p>
+                </CardHeader>
+                <CardContent className="space-y-3 flex-1 flex flex-col">
+                  <div>
+                    <h4 className="text-base font-semibold text-[#0B1F3A] mb-1">
+                      Challenge
+                    </h4>
+                    <p className="text-base text-slate-600 leading-snug">
+                      {study.challenge}
+                    </p>
+                  </div>
+                  <div>
+                    <h4 className="text-base font-semibold text-[#0B1F3A] mb-1">
+                      Solution
+                    </h4>
+                    <p className="text-base text-slate-600 leading-snug">
+                      {study.solution}
+                    </p>
+                  </div>
+                  <div className="pt-2 border-t border-slate-200">
+                    <h4 className="text-base font-semibold text-emerald-700 mb-1">
+                      Outcome
+                    </h4>
+                    <p className="text-base text-slate-700 leading-snug">
+                      {study.outcome}
+                    </p>
+                  </div>
+                </CardContent>
+              </Card>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* SECTION 13: RISK DIAGNOSTIC */}
+      <section className="py-14 bg-slate-50 border-b border-slate-200">
+        <div className="container mx-auto px-6 md:px-8 max-w-6xl">
+          <div className="text-center mb-10">
+            <h2 className="text-[28px] font-bold text-[#0B1F3A] font-serif tracking-tight">
+              Risk Diagnostic
+            </h2>
+            <p className="mt-3 text-base text-slate-600 max-w-2xl mx-auto leading-snug">
+              Contextual assessments to understand your current risk posture and
+              prioritize actions.
+            </p>
+          </div>
+          <div className="grid md:grid-cols-2 gap-5">
+            {diagnostics.map((diag, i) => (
+              <Card
+                key={i}
+                className="border-slate-300 bg-white shadow-sm hover:shadow-md transition-shadow"
+              >
+                <CardContent className="p-5 flex items-start gap-3">
+                  <div className="w-9 h-9 rounded-full bg-[#EAF2FF] flex items-center justify-center shrink-0">
+                    <FileText className="h-4 w-4 text-[#1E5EFF]" />
+                  </div>
+                  <div>
+                    <h3 className="text-base font-bold text-[#0B1F3A] mb-1">
+                      {diag.title}
+                    </h3>
+                    <p className="text-base text-slate-600 leading-snug">
+                      {diag.description}
+                    </p>
+                    <Button
+                      variant="link"
+                      className="px-0 mt-2 text-[#1E5EFF] hover:text-[#0B1F3A] text-sm font-semibold uppercase tracking-wide"
+                      onClick={() => (window.location.href = "/contact")}
+                    >
+                      Start Assessment <ChevronRight className="h-3.5 w-3.5 ml-1" />
+                    </Button>
+                  </div>
+                </CardContent>
+              </Card>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* SECTION 14: EXECUTIVE CTA */}
+      <section className="py-20 bg-gradient-to-br from-[#0B1F3A] via-[#0B1F3A] to-[#0D2B4D] text-white">
+        <div className="container mx-auto px-6 md:px-8 max-w-5xl text-center">
+          <div className="space-y-6">
+            <h2 className="text-[28px] md:text-[32px] font-bold font-serif tracking-tight">
+              Ready to Architect Your Enterprise Risk Strategy?
+            </h2>
+            <p className="text-base text-slate-300 max-w-3xl mx-auto leading-snug">
+              Connect with our senior risk architects to design a customized
+              program aligned to your organization&apos;s unique exposures and
+              strategic objectives.
+            </p>
+            <div className="flex flex-col sm:flex-row gap-3 justify-center pt-2">
+              <Button
+                size="lg"
+                className="bg-[#1E5EFF] hover:bg-[#1E5EFF]/90 text-white font-semibold text-sm uppercase tracking-widest"
+                onClick={() => (window.location.href = "/contact")}
+              >
+                {offering.cta?.primary || "Book Consultation"}
+              </Button>
+              <Button
+                size="lg"
+                variant="outline"
+                  className="bg-transparent border-white/20 text-white hover:bg-white/10 text-sm uppercase tracking-widest"
+                  onClick={() => (window.location.href = "/contact")}
+                >
+                  {offering.cta?.secondary || "Request Assessment"}
+                </Button>
+              <Button
+                size="lg"
+                variant="outline"
+                className="bg-transparent border-white/20 text-white hover:bg-white/10 text-sm uppercase tracking-widest"
+                onClick={() => (window.location.href = "/contact")}
+              >
+                <Download className="h-4 w-4 mr-2" />
+                Download Solution Brief
+              </Button>
+              <Button
+                size="lg"
+                variant="outline"
+                  className="bg-transparent border-white/20 text-white hover:bg-white/10 text-sm uppercase tracking-widest"
+                onClick={() => (window.location.href = "/contact")}
+              >
+                Speak With Expert
+              </Button>
+            </div>
+          </div>
+        </div>
+      </section>
+    </div>
+  );
+}
