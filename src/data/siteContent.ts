@@ -941,26 +941,10 @@ export const leadershipTeam = [
       {
         id: "poojasri",
         name: "Poojasri",
-        title: "AI Engineering (Intern)",
+        title: "AI/ML Engineer",
         location: "India",
         bio: "AI engineering intern supporting machine learning and data science initiatives.",
         image: "https://images.unsplash.com/photo-1494790108377-be9c501de802?q=80&w=400&auto=format&fit=crop"
-      },
-      {
-        id: "harikrishnan",
-        name: "HariKrishnan K",
-        title: "AI Engineering (Intern)",
-        location: "India",
-        bio: "AI engineering intern working on risk prediction and NLP models.",
-        image: "https://images.unsplash.com/photo-1567532237091-e9d7de4b52c8?q=80&w=400&auto=format&fit=crop"
-      },
-      {
-        id: "praveen",
-        name: "Praveen Kumar R",
-        title: "AI Engineering (Intern)",
-        location: "India",
-        bio: "AI engineering intern contributing to model training and evaluation.",
-        image: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?q=80&w=400&auto=format&fit=crop"
       },
       {
         id: "sathya",
